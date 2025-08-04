@@ -3,7 +3,7 @@ import { axiosInstance } from '../lib/axios.js';
 import toast from 'react-hot-toast';
 import { io } from 'socket.io-client';
 
-const BASE_URL= "http://localhost:5001";
+const BASE_URL=import.meta.env.MODE === "development"?"http://localhost:5001":"/";
 
 //A store is created using the create function from Zustand. The store contains your state and any functions to update it.
 export const useAuthStore = create((set,get)=>({// first argument is a callback function where we would like to return an object and this object will be our initial state

@@ -3,6 +3,8 @@ import express from 'express'; //type module
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'; // cors error due to backend and front end being different ports,i.e, 'http://localhost:5001/api/auth/check', http://localhost:5173'
+import path from 'path'; //built in node
+
 
 import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js"; //for local files put .js in the end since type is module
@@ -14,6 +16,7 @@ dotenv.config()
 // the above section is no longer needed since we're using socket.io
 
 const PORT= process.env.PORT // process.env to read .env content (now the port value is coming form .env file)
+const __dirname = path.resolve();
 
 app.use(express.json()); //basically allows us to extract the json data from body @auth.controller.js
 app.use(cookieParser()); //allows us to parse a cookie
@@ -24,6 +27,16 @@ app.use(cors({ //use curly braces, this shit is an object
 
 app.use("/api/auth",authRoutes); //if user visits /api/auth, then call authRoutes
 app.use("/api/messages",messageRoutes);
+
+if(process.env.NODE_ENV==="production"){
+    app.use(express.static(path.join(__dirname,"../frontend/dist"))); //connects the backend to the dist folder of frontend. dist folder is the optimized version of the entire react application.
+
+    app.get("*",(req,res)=>{//__dirname= backend folder. *-> any route
+        res.sendFile(path.join(__dirname,"../frontend","dist","index.html")); //visiting any route here gets forwarded to index.html of frontend/dist
+        //index.html is the entry point of the react application.
+    })
+
+} //basically, here we're moving frontend from localhost to a single port
 
 // app.listen(PORT,()=>{ //once starts listening, display the string server is runnin on PORT. to run this, create a script in scripts of package.json
 //     console.log(" server is runnin on PORT: "+ PORT);
