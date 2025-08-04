@@ -18,7 +18,7 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center"> {/* w-9 h-9 same as size-9*/}
                 <MessageSquare className="w-5 h-5 text-primary" />
               </div>
-              <h1 className="text-lg font-bold">ChatBuddy</h1>
+              <h1 className="text-lg font-bold">Chattr</h1>
             </Link>
           </div>
 
@@ -39,7 +39,7 @@ const Navbar = () => {
               <>
                 <Link to={"/profile"} className={`btn btn-sm gap-2`}>
                   <User className="size-5" />
-                  <span className="hidden sm:inline">Profile</span>
+                  <span className="hidden sm:inline">Profile</span> {/*span element contains Profile but is invisible in small screens. Show full text on larger screens where there's more space. else just show icon */}
                 </Link>
 
                 <button className="flex gap-2 items-center" onClick={logout}>

@@ -12,12 +12,18 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import {Loader} from 'lucide-react' //lucide for icons
 import {Toaster} from 'react-hot-toast' //react hot toast for notifications
+import { useThemeStore } from "./store/useThemeStore";
 
 
 const App =()=>{
 
-  const {authUser,checkAuth,isCheckingAuth}= useAuthStore(); //grabbing states from useAuthStore
+  const {authUser,checkAuth,isCheckingAuth,onlineUsers}= useAuthStore(); //grabbing states from useAuthStore
 
+  console.log({onlineUsers});
+
+  const {theme}= useThemeStore();
+
+ //in development, eevery useeffect runs twice due to the StrictMode in main.jsx
   useEffect(()=>{ //as soon as our application starts, we call the checkAuth function
     checkAuth();
   },[checkAuth]); 
@@ -33,7 +39,7 @@ const App =()=>{
   )
 
   return (
-    <div >
+    <div data-theme={theme}>
     <Navbar /> {/* at the top of every page we'll have a navbar component */}
 
     <Routes>

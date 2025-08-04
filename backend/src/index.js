@@ -7,9 +7,11 @@ import cors from 'cors'; // cors error due to backend and front end being differ
 import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js"; //for local files put .js in the end since type is module
 import messageRoutes from "./routes/message.route.js"; 
+import { app,server } from './lib/socket.js';
 
 dotenv.config()
-const app= express(); // creating an express app
+// const app= express(); // creating an express app
+// the above section is no longer needed since we're using socket.io
 
 const PORT= process.env.PORT // process.env to read .env content (now the port value is coming form .env file)
 
@@ -21,9 +23,14 @@ app.use(cors({ //use curly braces, this shit is an object
 }));
 
 app.use("/api/auth",authRoutes); //if user visits /api/auth, then call authRoutes
-app.use("/api/message",messageRoutes);
+app.use("/api/messages",messageRoutes);
 
-app.listen(PORT,()=>{ //once starts listening, display the string server is runnin on PORT. to run this, create a script in scripts of package.json
+// app.listen(PORT,()=>{ //once starts listening, display the string server is runnin on PORT. to run this, create a script in scripts of package.json
+//     console.log(" server is runnin on PORT: "+ PORT);
+//     connectDB();
+// }); 
+
+server.listen(PORT,()=>{ //once starts listening, display the string server is runnin on PORT. to run this, create a script in scripts of package.json
     console.log(" server is runnin on PORT: "+ PORT);
     connectDB();
-}); 
+}); //building the socket io server on top of the existing node+express
